@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.apollographql.apollo3)
 }
 
 android {
@@ -39,6 +40,11 @@ android {
     buildFeatures {
         compose = true
     }
+}
+
+apollo {
+    generateKotlinModels.set(true)
+    packageNamesFromFilePaths()
 }
 
 dependencies {

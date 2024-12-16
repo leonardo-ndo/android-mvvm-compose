@@ -1,6 +1,5 @@
-package br.com.lno.android_mvvm_compose.ui.theme
+package br.com.lno.android_mvvm_compose.presentation.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

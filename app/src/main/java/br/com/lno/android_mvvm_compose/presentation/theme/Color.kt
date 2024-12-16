@@ -1,4 +1,4 @@
-package br.com.lno.android_mvvm_compose.ui.theme
+package br.com.lno.android_mvvm_compose.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
