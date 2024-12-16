@@ -2,20 +2,22 @@
 
 This is a small project, training the implementation of the MVVM (Model-View-ViewModel) pattern.
 
-The app makes a call, via Retrofit, to https://jsonplaceholder.typicode.com/todos, and populates a RecyclerView with the retrieved data.
+The app makes a call, via GraphQL, to https://countries.trevorblades.com/, and populates a list with the retrieved data, using Jetpack Compose
 
 ##### Keywords
 * Android
 * Kotlin
 * MVVM
 * Jetpack Compose
-* Retrofit (maybe?) / GraphQL
-* Coroutines
+* GraphQL
+* Coroutines / Flow
 * Hilt
 
-Have fun!
-
 ### Setup
+If there are any updates in the graphql structure, run the following command to update the schema.sdl file:
 
-If any updates in the graphql structure, run the following command to update the schema.sdl file:
-./gradlew :app:downloadApolloSchema --endpoint=https://countries.trevorblades.com --schema=app/src/main/graphql/schema.sdl 
+```
+./gradlew :app:downloadApolloSchema --endpoint=https://countries.trevorblades.com --schema=app/src/main/graphql/schema.sdl
+```
+
+Have fun!
