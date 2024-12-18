@@ -12,6 +12,8 @@ The app makes a call, via GraphQL, to https://countries.trevorblades.com/, and p
 * GraphQL
 * Coroutines / Flow
 * Hilt
+* JUnit
+* Mockk
 
 ### Setup
 If there are any updates in the graphql structure, run the following command to update the schema.sdl file:
