@@ -15,15 +15,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import br.com.lno.android_mvvm_compose.presentation.continents.ContinentsError
 import br.com.lno.android_mvvm_compose.presentation.continents.ContinentsList
+import br.com.lno.android_mvvm_compose.presentation.continents.ContinentsViewModel
 import br.com.lno.android_mvvm_compose.presentation.continents.ContinentsViewState
 import br.com.lno.android_mvvm_compose.presentation.theme.AndroidmvvmcomposeTheme
-import br.com.lno.android_mvvm_compose.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val mainViewModel by viewModels<MainViewModel>()
+    private val continentsViewModel by viewModels<ContinentsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,13 +37,13 @@ class MainActivity : ComponentActivity() {
                             .padding(paddingValues = innerPadding),
                         contentAlignment = Alignment.Center
                     ) {
-                        when (val result = mainViewModel.result.collectAsState().value) {
+                        when (val result = continentsViewModel.result.collectAsState().value) {
                             ContinentsViewState.Loading -> {
                                 CircularProgressIndicator()
                             }
 
                             ContinentsViewState.Failure -> {
-                                ContinentsError { mainViewModel.getContinents() }
+                                ContinentsError { continentsViewModel.getContinents() }
                             }
 
                             is ContinentsViewState.Success -> {

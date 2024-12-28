@@ -12,7 +12,6 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "br.com.lno.android_mvvm_compose"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

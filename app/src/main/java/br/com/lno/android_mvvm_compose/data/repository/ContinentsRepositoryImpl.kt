@@ -8,12 +8,11 @@ import javax.inject.Inject
 class ContinentsRepositoryImpl @Inject constructor(private val continentsGqlDataSource: ContinentsGqlDataSource) :
     ContinentsRepository {
 
-    override suspend fun getContinents(): List<Continent> {
+    override suspend fun getContinents(): Result<List<Continent>> {
         return try {
-            continentsGqlDataSource.getContinents()
+            Result.success(value = continentsGqlDataSource.getContinents())
         } catch (e: Exception) {
-            e.printStackTrace()
-            throw e
+            Result.failure(exception = e)
         }
     }
 }
