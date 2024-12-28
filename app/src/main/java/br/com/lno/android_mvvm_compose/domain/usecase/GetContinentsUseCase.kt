@@ -1,24 +1,16 @@
 package br.com.lno.android_mvvm_compose.domain.usecase
 
+import br.com.lno.android_mvvm_compose.domain.model.Continent
 import br.com.lno.android_mvvm_compose.domain.repository.ContinentsRepository
-import br.com.lno.android_mvvm_compose.presentation.continents.ContinentsViewState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import br.com.lno.android_mvvm_compose.domain.usecase.base.BaseUseCase
 import javax.inject.Inject
 
-class GetContinentsUseCase @Inject constructor(private val continentsRepository: ContinentsRepository) {
+class GetContinentsUseCase @Inject constructor(private val continentsRepository: ContinentsRepository) :
+    BaseUseCase<List<Continent>> {
 
-    fun execute(): Flow<ContinentsViewState> {
-        return flow {
-            emit(ContinentsViewState.Loading)
-            try {
-                val response = continentsRepository.getContinents()
-                emit(ContinentsViewState.Success(data = response))
-            } catch (e: Exception) {
-                emit(ContinentsViewState.Failure)
-            }
-        }.flowOn(Dispatchers.IO)
+    override suspend fun execute(): List<Continent> {
+        return continentsRepository.getContinents().getOrThrow().map {
+            Continent(code = it.code, name = it.name)
+        }
     }
 }

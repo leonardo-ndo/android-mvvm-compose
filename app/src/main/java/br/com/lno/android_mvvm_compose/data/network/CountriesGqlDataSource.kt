@@ -1,7 +1,7 @@
 package br.com.lno.android_mvvm_compose.data.network
 
 import br.com.lno.android_mvvm_compose.FindCountriesOfAContinentQuery
-import br.com.lno.android_mvvm_compose.domain.model.Country
+import br.com.lno.android_mvvm_compose.data.model.Country
 import com.apollographql.apollo3.ApolloClient
 import javax.inject.Inject
 

@@ -1,7 +1,7 @@
 package br.com.lno.android_mvvm_compose.data.repository
 
+import br.com.lno.android_mvvm_compose.data.model.Continent
 import br.com.lno.android_mvvm_compose.data.network.ContinentsGqlDataSource
-import br.com.lno.android_mvvm_compose.domain.model.Continent
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -37,20 +37,26 @@ class ContinentsRepositoryImplTest {
         val result = continentsRepository.getContinents()
 
         // then
-        Assert.assertEquals(result, continentsResponse)
+        Assert.assertEquals(result, Result.success(continentsResponse))
         coVerify {
             continentsGqlDataSource.getContinents()
         }
     }
 
     @Test
-    fun `getContinents exception test`() {
+    fun `getContinents exception test`() = runTest {
         // given
-        coEvery { continentsGqlDataSource.getContinents() } throws IOException()
+        val exception = IOException()
 
-        // when / then
-        Assert.assertThrows(IOException::class.java) {
-            runTest { continentsRepository.getContinents() }
+        coEvery { continentsGqlDataSource.getContinents() } throws exception
+
+        // when
+        val result = continentsRepository.getContinents()
+
+        // then
+        Assert.assertEquals(result, Result.failure<Throwable>(exception))
+        coVerify {
+            continentsGqlDataSource.getContinents()
         }
     }
 }

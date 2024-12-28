@@ -1,7 +1,7 @@
 package br.com.lno.android_mvvm_compose.data.repository
 
+import br.com.lno.android_mvvm_compose.data.model.Country
 import br.com.lno.android_mvvm_compose.data.network.CountriesGqlDataSource
-import br.com.lno.android_mvvm_compose.domain.model.Country
 import br.com.lno.android_mvvm_compose.domain.repository.CountriesRepository
 import javax.inject.Inject
 

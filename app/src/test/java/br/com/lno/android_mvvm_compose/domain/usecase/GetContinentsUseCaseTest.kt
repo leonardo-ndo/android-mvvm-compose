@@ -1,11 +1,9 @@
 package br.com.lno.android_mvvm_compose.domain.usecase
 
-import br.com.lno.android_mvvm_compose.domain.model.Continent
+import br.com.lno.android_mvvm_compose.data.model.Continent
 import br.com.lno.android_mvvm_compose.domain.repository.ContinentsRepository
-import br.com.lno.android_mvvm_compose.presentation.continents.ContinentsViewState
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import okio.IOException
 import org.junit.Assert
@@ -32,7 +30,7 @@ class GetContinentsUseCaseTest {
             Continent(code = "NA", name = "North America"),
         )
 
-        coEvery { continentsRepository.getContinents() } returns response
+        coEvery { continentsRepository.getContinents() } returns Result.success(response)
 
         // when
         val result = getContinentsUseCase.execute().toList()
@@ -40,22 +38,23 @@ class GetContinentsUseCaseTest {
         // then
         Assert.assertEquals(
             result,
-            listOf(ContinentsViewState.Loading, ContinentsViewState.Success(response))
+            response.map {
+                br.com.lno.android_mvvm_compose.domain.model.Continent(
+                    code = it.code,
+                    name = it.name
+                )
+            }
         )
     }
 
     @Test
-    fun `getContinentsUseCase exception test`() = runTest {
+    fun `getContinentsUseCase exception test`() {
         // given
-        coEvery { continentsRepository.getContinents() } throws IOException()
+        coEvery { continentsRepository.getContinents() } returns Result.failure(exception = IOException())
 
-        // when
-        val result = getContinentsUseCase.execute().toList()
-
-        // then
-        Assert.assertEquals(
-            result,
-            listOf(ContinentsViewState.Loading, ContinentsViewState.Failure)
-        )
+        // when / then
+        Assert.assertThrows(IOException::class.java) {
+            runTest { getContinentsUseCase.execute() }
+        }
     }
 }
