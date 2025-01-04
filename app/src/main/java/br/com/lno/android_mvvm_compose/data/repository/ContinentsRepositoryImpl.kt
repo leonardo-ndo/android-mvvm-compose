@@ -12,6 +12,7 @@ class ContinentsRepositoryImpl @Inject constructor(private val continentsGqlData
         return try {
             Result.success(value = continentsGqlDataSource.getContinents())
         } catch (e: Exception) {
+            e.printStackTrace()
             Result.failure(exception = e)
         }
     }

@@ -9,12 +9,16 @@ class CountriesRepositoryImpl @Inject constructor(
     private val countriesGqlDataSource: CountriesGqlDataSource
 ) : CountriesRepository {
 
-    override suspend fun getCountries(continentCode: String): List<Country> {
+    override suspend fun getCountries(continentCode: String): Result<List<Country>> {
         return try {
-            countriesGqlDataSource.getCountriesOfSelectedContinent(continentCode = continentCode)
+            Result.success(
+                value = countriesGqlDataSource.getCountriesOfSelectedContinent(
+                    continentCode = continentCode
+                )
+            )
         } catch (e: Exception) {
             e.printStackTrace()
-            throw e
+            Result.failure(e)
         }
     }
 }

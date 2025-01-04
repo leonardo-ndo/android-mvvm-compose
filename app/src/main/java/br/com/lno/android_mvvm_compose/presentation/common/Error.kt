@@ -1,4 +1,4 @@
-package br.com.lno.android_mvvm_compose.presentation.continents
+package br.com.lno.android_mvvm_compose.presentation.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.sp
 import br.com.lno.android_mvvm_compose.R
 
 @Composable
-fun ContinentsError(onRetry: () -> Unit) {
+fun Error(onRetry: () -> Unit) {
     Column(
         verticalArrangement = Arrangement.spacedBy(space = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
