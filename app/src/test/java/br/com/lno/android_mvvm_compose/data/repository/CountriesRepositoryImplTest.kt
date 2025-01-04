@@ -1,6 +1,6 @@
 package br.com.lno.android_mvvm_compose.data.repository
 
-import br.com.lno.android_mvvm_compose.data.network.CountriesGqlDataSource
+import br.com.lno.android_mvvm_compose.data.network.gql.CountriesGqlDataSource
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

@@ -9,8 +9,6 @@ class GetCountriesUseCase @Inject constructor(private val countriesRepository: C
     BaseUseCaseWithParam<String, List<Country>> {
 
     override suspend fun execute(param: String): List<Country> {
-        return countriesRepository.getCountries(continentCode = param).getOrThrow().map {
-            Country(name = it.name, currency = it.currency)
-        }
+        return countriesRepository.getCountries(continentCode = param)
     }
 }

@@ -9,8 +9,6 @@ class GetContinentsUseCase @Inject constructor(private val continentsRepository:
     BaseUseCase<List<Continent>> {
 
     override suspend fun execute(): List<Continent> {
-        return continentsRepository.getContinents().getOrThrow().map {
-            Continent(code = it.code, name = it.name)
-        }
+        return continentsRepository.getContinents()
     }
 }

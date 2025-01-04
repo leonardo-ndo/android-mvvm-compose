@@ -1,6 +1,6 @@
 package br.com.lno.android_mvvm_compose.domain.usecase
 
-import br.com.lno.android_mvvm_compose.data.model.Continent
+import br.com.lno.android_mvvm_compose.domain.model.Continent
 import br.com.lno.android_mvvm_compose.domain.repository.ContinentsRepository
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -30,7 +30,7 @@ class GetContinentsUseCaseTest {
             Continent(code = "NA", name = "North America"),
         )
 
-        coEvery { continentsRepository.getContinents() } returns Result.success(response)
+        coEvery { continentsRepository.getContinents() } returns response
 
         // when
         val result = getContinentsUseCase.execute().toList()
@@ -39,10 +39,7 @@ class GetContinentsUseCaseTest {
         Assert.assertEquals(
             result,
             response.map {
-                br.com.lno.android_mvvm_compose.domain.model.Continent(
-                    code = it.code,
-                    name = it.name
-                )
+                Continent(code = it.code, name = it.name)
             }
         )
     }
@@ -50,7 +47,7 @@ class GetContinentsUseCaseTest {
     @Test
     fun `getContinentsUseCase exception test`() {
         // given
-        coEvery { continentsRepository.getContinents() } returns Result.failure(exception = IOException())
+        coEvery { continentsRepository.getContinents() } throws IOException()
 
         // when / then
         Assert.assertThrows(IOException::class.java) {
