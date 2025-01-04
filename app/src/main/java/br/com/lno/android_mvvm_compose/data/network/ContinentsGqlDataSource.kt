@@ -2,7 +2,7 @@ package br.com.lno.android_mvvm_compose.data.network
 
 import br.com.lno.android_mvvm_compose.GetContinentsQuery
 import br.com.lno.android_mvvm_compose.data.model.Continent
-import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo.ApolloClient
 import javax.inject.Inject
 
 class ContinentsGqlDataSource @Inject constructor(private val apolloClient: ApolloClient) {

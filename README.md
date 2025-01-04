@@ -19,7 +19,7 @@ The app makes a call, via GraphQL, to https://countries.trevorblades.com/, and p
 If there are any updates in the graphql structure, run the following command to update the schema.sdl file:
 
 ```
-./gradlew :app:downloadApolloSchema --endpoint=https://countries.trevorblades.com --schema=app/src/main/graphql/schema.sdl
+./gradlew downloadContinentsAndCountriesApolloSchemaFromIntrospection
 ```
 
 Have fun!

@@ -1,10 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.apollographql.apollo)
     alias(libs.plugins.google.dagger.hilt.android)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.apollographql.apollo3)
 }
 
 android {
@@ -39,11 +39,16 @@ android {
     buildFeatures {
         compose = true
     }
-}
 
-apollo {
-    generateKotlinModels.set(true)
-    packageNamesFromFilePaths()
+    apollo {
+        service("continentsAndCountries") {
+            packageName.set("br.com.lno.android_mvvm_compose")
+            introspection {
+                endpointUrl.set("https://countries.trevorblades.com")
+                schemaFile.set(file("src/main/graphql/br/com/lno/android_mvvm_compose/schema.sdl"))
+            }
+        }
+    }
 }
 
 dependencies {
@@ -57,7 +62,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.apollo.runtime)
+    implementation(libs.apollo.normalized.cache.jvm)
+    implementation(libs.apollo.normalized.cache.sqlite)
 
     // Hilt
     implementation(libs.hilt.android)
