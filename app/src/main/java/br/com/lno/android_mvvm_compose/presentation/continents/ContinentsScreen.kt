@@ -1,5 +1,10 @@
 package br.com.lno.android_mvvm_compose.presentation.continents
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,16 +26,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.lno.android_mvvm_compose.domain.model.Continent
 import br.com.lno.android_mvvm_compose.presentation.common.Error
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun ContinentsScreen(
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     onItemClick: (Continent) -> Unit,
-    viewModel: ContinentsViewModel = hiltViewModel()
+    viewModel: ContinentsViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(Unit) {
         viewModel.getContinents()
     }
 
-    Box(contentAlignment = Alignment.Center) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         when (val result = viewModel.result.observeAsState().value) {
             ContinentsViewState.Loading -> {
                 CircularProgressIndicator()
@@ -39,14 +48,20 @@ fun ContinentsScreen(
             is ContinentsViewState.Success -> {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(result.data) {
-                        Text(
-                            text = it.name,
-                            modifier = Modifier
-                                .clickable { onItemClick(it) }
-                                .fillMaxWidth()
-                                .padding(all = 6.dp),
-                            textAlign = TextAlign.Center
-                        )
+                        with(sharedTransitionScope) {
+                            Text(
+                                text = it.name,
+                                modifier = Modifier
+                                    .clickable { onItemClick(it) }
+                                    .sharedElement(
+                                        state = rememberSharedContentState(key = it.code),
+                                        animatedVisibilityScope = animatedVisibilityScope,
+                                    )
+                                    .fillMaxWidth()
+                                    .padding(all = 6.dp),
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                 }
             }
@@ -60,8 +75,17 @@ fun ContinentsScreen(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Preview
 @Composable
 fun ContinentsScreenPreview() {
-    ContinentsScreen(onItemClick = { })
+    SharedTransitionLayout {
+        AnimatedVisibility(visible = true) {
+            ContinentsScreen(
+                sharedTransitionScope = this@SharedTransitionLayout,
+                animatedVisibilityScope = this,
+                onItemClick = { }
+            )
+        }
+    }
 }

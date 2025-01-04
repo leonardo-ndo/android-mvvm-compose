@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,13 +29,12 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @OptIn(ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             AndroidmvvmcomposeTheme {
-                val navController = rememberNavController()
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
@@ -48,31 +49,36 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 ) { innerPadding ->
-                    NavHost(
-                        navController = navController,
-                        startDestination = Continents,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(paddingValues = innerPadding),
-                    ) {
-                        composable<Continents> {
-                            ContinentsScreen(
-                                onItemClick = {
-                                    navController.navigate(
-                                        route = Countries(
-                                            continentCode = it.code,
-                                            continentName = it.name
+                    SharedTransitionLayout {
+                        val navController = rememberNavController()
+                        NavHost(
+                            navController = navController,
+                            startDestination = Continents,
+                            modifier = Modifier.padding(paddingValues = innerPadding),
+                        ) {
+                            composable<Continents> {
+                                ContinentsScreen(
+                                    sharedTransitionScope = this@SharedTransitionLayout,
+                                    animatedVisibilityScope = this@composable,
+                                    onItemClick = {
+                                        navController.navigate(
+                                            route = Countries(
+                                                continentCode = it.code,
+                                                continentName = it.name
+                                            )
                                         )
-                                    )
-                                },
-                            )
-                        }
-                        composable<Countries> {
-                            it.toRoute<Countries>().apply {
-                                CountriesScreen(
-                                    continentCode = continentCode,
-                                    continentName = continentName
+                                    },
                                 )
+                            }
+                            composable<Countries> {
+                                it.toRoute<Countries>().apply {
+                                    CountriesScreen(
+                                        continentCode = continentCode,
+                                        continentName = continentName,
+                                        sharedTransitionScope = this@SharedTransitionLayout,
+                                        animatedVisibilityScope = this@composable,
+                                    )
+                                }
                             }
                         }
                     }
