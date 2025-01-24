@@ -12,6 +12,11 @@ class CountriesGqlDataSource @Inject constructor(private val apolloClient: Apoll
         val response =
             apolloClient.query(query = FindCountriesOfAContinentQuery(code = continentCode))
                 .execute()
+
+        response.exception?.let {
+            throw it
+        }
+
         return response.data?.continent?.countries.toCountryList()
     }
 }

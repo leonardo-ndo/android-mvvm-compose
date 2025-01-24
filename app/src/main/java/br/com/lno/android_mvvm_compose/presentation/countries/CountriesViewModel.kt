@@ -22,6 +22,7 @@ class CountriesViewModel @Inject constructor(private val getCountriesUseCase: Ge
             _countries.value = try {
                 CountriesViewState.Success(data = getCountriesUseCase.execute(continent))
             } catch (e: Exception) {
+                e.printStackTrace()
                 CountriesViewState.Failure
             }
         }

@@ -26,6 +26,7 @@ class ContinentsViewModel @Inject constructor(private val getContinentsUseCase: 
             _result.value = try {
                 ContinentsViewState.Success(data = getContinentsUseCase.execute())
             } catch (e: Exception) {
+                e.printStackTrace()
                 ContinentsViewState.Failure
             }
         }

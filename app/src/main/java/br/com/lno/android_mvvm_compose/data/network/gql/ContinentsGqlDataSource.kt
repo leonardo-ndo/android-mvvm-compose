@@ -10,6 +10,11 @@ class ContinentsGqlDataSource @Inject constructor(private val apolloClient: Apol
 
     suspend fun getContinents(): List<Continent> {
         val response = apolloClient.query(query = GetContinentsQuery()).execute()
+
+        response.exception?.let {
+            throw it
+        }
+
         return response.data?.continents.toContinentList()
     }
 }
