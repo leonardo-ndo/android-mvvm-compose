@@ -23,7 +23,7 @@ import androidx.navigation.toRoute
 import br.com.lno.android_mvvm_compose.R
 import br.com.lno.android_mvvm_compose.presentation.continents.ContinentsScreen
 import br.com.lno.android_mvvm_compose.presentation.countries.CountriesScreen
-import br.com.lno.android_mvvm_compose.presentation.theme.AndroidmvvmcomposeTheme
+import br.com.lno.android_mvvm_compose.presentation.theme.AndroidMVVMComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AndroidmvvmcomposeTheme {
+            AndroidMVVMComposeTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
